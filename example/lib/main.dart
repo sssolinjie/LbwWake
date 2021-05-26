@@ -15,9 +15,9 @@ import 'package:lbwWake/lbwWake.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   LbwWake.initSDK(
-      appid: "23174501",
-      appkey: "HQg507YYm55jQ7o7bFjh3sEf",
-      secretkey: "8dPMtSjHPqI5nwbDuIbxb8PhTPOL8XYa");
+      appid: "24230858",
+      appkey: "OyBZwoyRfGwdX4sGuV0l3G5L",
+      secretkey: "kp3b34iGfgxPuDLXwU6EVVr3hwmRgz8E");
   runApp(MyApp());
 }
 
