@@ -8,6 +8,7 @@ import com.baidu.speech.EventManager;
 import com.baidu.speech.EventManagerFactory;
 import com.baidu.speech.asr.SpeechConstant;
 import com.example.lbwWake.BaiduConfig;
+import com.example.lbwWake.wakeup.MyLogger;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,6 +51,7 @@ public class MiniRecog implements EventListener {
         asr.send(event, json, null, 0, 0);
     }
     public void stop() {
+        isstart = false;
         asr.send(SpeechConstant.ASR_STOP, null, null, 0, 0);
     }
 
@@ -79,7 +81,7 @@ public class MiniRecog implements EventListener {
                 } catch (JSONException e) {
 
                 }
-            }  else if (params.contains("\"final_result\""))  {
+            } else if (params.contains("\"final_result\"")) {
                 // 一句话的最终识别结果
                 logTxt += ", 最终识别结果：" + params;
                 isstart = false;
@@ -91,18 +93,22 @@ public class MiniRecog implements EventListener {
 
                 }
                 stop();
-            }  else {
+            } else {
                 // 一般这里不会运行
                 logTxt += " ;params :" + params;
                 if (data != null) {
                     logTxt += " ;data length=" + data.length;
                 }
-               // Log.d("lbw111-->", logTxt);
+                // Log.d("lbw111-->", logTxt);
             }
-        }else {
-            // 识别开始，结束，音量，音频数据回调
+        }else if(name.equals(SpeechConstant.CALLBACK_EVENT_ASR_END)){
+            logTxt += ", ：" + params;
+
+           // MyLogger.info("林炳午111", "没有讲话了：" + logTxt);
+        }else if (name.equals(SpeechConstant.CALLBACK_EVENT_ASR_FINISH)) {
+            logTxt += ", " + params;
+            MyLogger.info("林炳午111", "识别结束：" + logTxt);
             if (params != null && !params.isEmpty()){
-                logTxt += " ;params :" + params;
                 if(isstart == false) return;
                 //Log.d("lbw111-->", logTxt);
                 if(name == "asr.finish"){
@@ -117,9 +123,31 @@ public class MiniRecog implements EventListener {
                     }
                 }
             }
-            if (data != null) {
-                logTxt += " ;data length=" + data.length;
-            }
         }
+
+
+
+//        else {
+//            // 识别开始，结束，音量，音频数据回调
+//            if (params != null && !params.isEmpty()){
+//                logTxt += " ;params :" + params;
+//                Log.d("lbw111-->", logTxt);
+//                if(isstart == false) return;
+//                if(name == "asr.finish"){
+//                    try {
+//                        JSONObject jsonObj = new JSONObject(params);
+//                        int st = jsonObj.getInt("error");
+//                        if(st != 0) {
+//                            channel.invokeMethod("error", String.valueOf(st));
+//                        }
+//                    } catch (JSONException e) {
+//
+//                    }
+//                }
+//            }
+//            if (data != null) {
+//                logTxt += " ;data length=" + data.length;
+//            }
+//        }
     }
 }

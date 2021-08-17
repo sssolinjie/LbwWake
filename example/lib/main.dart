@@ -35,7 +35,6 @@ class _MyAppState extends State<MyApp> {
     initPlatformState();
     LbwWake.addListen((String method, String data) {
       print(method + ":" + data);
-      LbwWake.startspeak();
     });
   }
 
@@ -67,7 +66,11 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+          child: RaisedButton(
+              onPressed: () {
+                LbwWake.startspeak();
+              },
+              child: Text('Running on: $_platformVersion\n')),
         ),
       ),
     );
